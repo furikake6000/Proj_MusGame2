@@ -66,13 +66,15 @@ public class MusicPlay : MonoBehaviour {
     {
         //ソース指定し音楽流す
         //音楽ファイルロード
-        WWW www = new WWW("file:///" + fileName);
-        //読み込み完了まで待機
-        yield return www;
+        using(WWW www = new WWW("file:///" + fileName))
+        {
+            //読み込み完了まで待機
+            yield return www;
 
-        audioSource.clip = www.GetAudioClip(true,true);
+            audioSource.clip = www.GetAudioClip(true, true);
 
-        audioSource.Play();
+            audioSource.Play();
+        }
     }
 
     //Playボタンクリック
