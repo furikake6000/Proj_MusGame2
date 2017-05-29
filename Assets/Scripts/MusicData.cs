@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Text.RegularExpressions;
 
-public class MusicData : MonoBehaviour {
+public class MusicData {
 
     //Values
     public string Wav{ get; } //音楽ファイルへの絶対パス
