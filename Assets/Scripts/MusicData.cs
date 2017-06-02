@@ -24,7 +24,7 @@ public class MusicData {
     public MusicData() {
         DataFilePath = "";
         WavMain = "";
-        Wav = new Dictionary<string, string>;
+        Wav = new Dictionary<string, string>();
         Bpm = 130;
         Title = "";
         Genre = "";
