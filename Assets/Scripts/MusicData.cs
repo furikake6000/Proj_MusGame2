@@ -72,37 +72,37 @@ public class MusicData {
                 if (regTitle.IsMatch(dataLine))
                 {
                     //TITLE
-                    Title = dataLine.Substring(6);
+                    Title = dataLine.Substring(7);
                 }
                 else
                 if (regGenre.IsMatch(dataLine))
                 {
                     //GENRE
-                    Genre = dataLine.Substring(6);
+                    Genre = dataLine.Substring(7);
                 }
                 else
                 if (regArtist.IsMatch(dataLine))
                 {
                     //ARTIST
-                    Artist = dataLine.Substring(7);
+                    Artist = dataLine.Substring(8);
                 }
                 else
                 if (regBpm.IsMatch(dataLine))
                 {
                     //BPM
-                    Bpm = int.Parse(dataLine.Substring(5));
+                    Bpm = int.Parse(dataLine.Substring(6));
                 }
                 else
                 if (regWavMain.IsMatch(dataLine))
                 {
                     //WAVMAIN
-                    WavMain = Path.GetDirectoryName(DataFilePath) + dataLine.Substring(8);
+                    WavMain = Path.GetDirectoryName(DataFilePath) + dataLine.Substring(9);
                 }
                 else
                 if (regWav.IsMatch(dataLine))
                 {
                     //WAVXX(XXには36進数が入る、小文字は大文字に)
-                    Wav[dataLine.Substring(3, 2).ToUpper()] = Path.GetDirectoryName(DataFilePath) + dataLine.Substring(6);
+                    Wav[dataLine.Substring(4, 2).ToUpper()] = Path.GetDirectoryName(DataFilePath) + dataLine.Substring(7);
                 }
             }
         }

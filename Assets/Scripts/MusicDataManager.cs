@@ -6,39 +6,18 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-public class LoadDataFiles : MonoBehaviour {
+public class MusicDataManager : MonoBehaviour {
 
     //定数群
     const string MUSIC_DIR = "Musics/"; //StreamingAssetsフォルダ内の音楽ファイル群の位置
 
-    //Inspector指定変数群
-    [SerializeField]
-    Text debugLog;   //ログ表示用テキストボックス
-
     //グローバル変数群
-    MusicData[] musics;    //音楽ファイル一覧取得
-    int selectedTrack = 0;
+    public static MusicData[] Musics { get; private set; }    //音楽ファイル一覧取得
 
-    // Use this for initialization
-    void Start () {
-        LoadMusics();
-
-        if(musics.Length >= 1)
-        {
-            debugLog.text =
-                "Title: " + musics[0].Title + "\n" +
-                "Genre: " + musics[0].Genre + "\n" +
-                "Artist: " + musics[0].Artist + "\n" +
-                "BPM: " + musics[0].Bpm + "\n";
-        }
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    void LoadMusics()
+    /// <summary>
+    /// 指定ディレクトリ下に存在する音楽データの一括読み込み
+    /// </summary>
+    public static void LoadMusics()
     {
         //音楽を一括取得
         string[] musicDataPath = new string[0]; //データファイル格納用配列
@@ -55,11 +34,11 @@ public class LoadDataFiles : MonoBehaviour {
         }
 
         //musics配列を初期化
-        musics = new MusicData[musicDataPath.Length];
-        for (int i = 0; i < musics.Length; i++)
+        Musics = new MusicData[musicDataPath.Length];
+        for (int i = 0; i < Musics.Length; i++)
         {
             //musicDataPathそれぞれに対してmusicsを読み込む
-            musics[i] = new MusicData(musicDataPath[i]);
+            Musics[i] = new MusicData(musicDataPath[i]);
         }
     }
 }
