@@ -1,12 +1,19 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
-namespace Assets.Scripts
-{
-    class Key
+public class Key : MonoBehaviour {
+
+    //グローバル変数群
+    Note[] notes;  //ノーツ
+
+    private void Start()
     {
+        
+    }
+
+    private void Update()
+    {
+        
     }
 }

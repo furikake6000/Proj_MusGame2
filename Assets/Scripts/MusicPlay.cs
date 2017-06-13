@@ -12,38 +12,48 @@ public class MusicPlay : MonoBehaviour {
     //グローバル変数群
     MusicData nowMusic;         //現在再生しているMusicのData
     AudioSource audioSource;    //このgameObjectに紐付けられたAudioSource(Required)
-    Notes[] notes;  //ノーツ
+    Key[] keys; //鍵（けん）
+
+    public MusicData NowMusic
+    {
+        get
+        {
+            return nowMusic;
+        }
+
+        set
+        {
+            nowMusic = value;
+        }
+    }
 
     // Use this for initialization
-    void Start () {
+    private void Start () {
         //audioSource初期化
         audioSource = gameObject.GetComponent<AudioSource>();
 
-        //musicFiles初期化
-        musics = new string[0];
-        //音楽を一括取得
-        string[] patterns = new string[] { "*.ogg", "*.wav" , "*.mp3" };
-        foreach (string pattern in patterns)
-        {
-            //StreamingAssetsフォルダ内のパターンにマッチしたファイル名の配列を取得
-            string[] matchFiles = Directory.GetFiles(Application.streamingAssetsPath + "\\" + MUSIC_DIR, pattern);
-            //musicFilesの末尾に追加
-            Array.Resize<string>(ref musics, musics.Length + matchFiles.Length);
-            Array.Copy(matchFiles, 0, musics, musics.Length - matchFiles.Length, matchFiles.Length);
-        }
-
-        foreach (string musicFile in musics)
-        {
-            debugLog.text += Path.GetFileName(musicFile) + "\n";
-        }
-        debugLog.text += musics.Length + " Files loaded.\n";
-
+        
     }
 
     private void Update()
     {
         //表示更新
         RefreshDisplay();
+    }
+
+    /// <summary>
+    /// 再生を開始する
+    /// </summary>
+    private void Play()
+    {
+        if(nowMusic == null)
+        {
+            //音楽が設定されていなかったら終了
+            return;
+        }
+        
+        //WavMainを再生（非同期処理）
+        StartCoroutine("StreamPlayAudioFile", nowMusic.WavMain);
     }
 
     /// <summary>
@@ -65,51 +75,11 @@ public class MusicPlay : MonoBehaviour {
             audioSource.Play();
         }
     }
-
-    //Playボタンクリック
-    public void PressPlayButton()
-    {
-        //音楽読み込み&開始
-        StartCoroutine("StreamPlayAudioFile", musics[selectedTrack]);
-    }
-
-    //トラック進ボタンクリック
-    public void PressFormerTrackButton()
-    {
-        //音楽止めとく
-        if (audioSource.isPlaying) audioSource.Stop();
-
-        selectedTrack--;
-        if (selectedTrack < 0) selectedTrack = musics.Length - 1;
-    }
-
-    //トラック戻ボタンクリック
-    public void PressLatterTrackButton()
-    {
-        //音楽止めとく
-        if(audioSource.isPlaying)audioSource.Stop();
-
-        selectedTrack++;
-        if (selectedTrack > musics.Length - 1) selectedTrack = 0;
-    }
-
+    
     //表示更新
     void RefreshDisplay()
     {
-        //トラックテキスト更新
-        trackDisplay.text = "Track " + (selectedTrack + 1) + "/" + musics.Length;
-
-        //現在再生位置を取得(0-1正規化)
-        float nowSeek = (audioSource.isPlaying) ? (audioSource.time / audioSource.clip.length) : 0.0f;
-        //テキストに反映
-        string seekBarText = "";    //新しいテキスト
-        const int BARNUM = 40;  //バーの数
-        for (int i = 0; i < BARNUM; i++)
-        {
-            seekBarText += (nowSeek <= ((float)i / BARNUM)) ? "□" : "■";
-        }
-        seekBarText += "\n";
-        seekDisplay.text = seekBarText;
+        
     }
 
     //float型を分秒表示に
