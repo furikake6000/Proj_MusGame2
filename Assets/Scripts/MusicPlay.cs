@@ -9,21 +9,10 @@ using System.Threading.Tasks;
 [RequireComponent(typeof(AudioSource))]
 public class MusicPlay : MonoBehaviour {
 
-    //定数群
-    const string MUSIC_DIR = "Musics/"; //StreamingAssetsフォルダ内の音楽ファイル群の位置
-
-    //Inspector指定変数群
-    [SerializeField]
-    Text debugLog;   //ログ表示用テキストボックス
-    [SerializeField]
-    Text trackDisplay;   //トラック番号表示用テキストボックス
-    [SerializeField]
-    Text seekDisplay;   //再生位置表示用テキストボックス
-
     //グローバル変数群
-    string[] musics;    //音楽ファイル一覧取得
-    int selectedTrack = 0;
-    AudioSource audioSource;
+    MusicData nowMusic;         //現在再生しているMusicのData
+    AudioSource audioSource;    //このgameObjectに紐付けられたAudioSource(Required)
+    Notes[] notes;  //ノーツ
 
     // Use this for initialization
     void Start () {
