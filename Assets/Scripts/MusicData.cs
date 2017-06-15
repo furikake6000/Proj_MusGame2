@@ -95,7 +95,7 @@ public class MusicData {
                 string dataLine = dataFileStream.ReadLine();
 
                 //一文字目が「#」かどうかでコマンドコードを判別
-                if(dataLine[0] == '#')
+                if(dataLine.Length > 0 && dataLine[0] == '#')
                 {
                     //「 (半角スペース)」、「:(コロン)」によって文字列をコマンドと内容物に分割
                     char[] separators = { ' ', ':' };
