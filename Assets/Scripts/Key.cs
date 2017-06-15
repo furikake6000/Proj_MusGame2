@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class Key : MonoBehaviour {
 
     //グローバル変数群
-    Note[] notes;  //ノーツ
+    AudioSource _audioSource;    //このgameObjectに紐付けられたAudioSource(Required)
+    Note[] _notes;  //ノーツ
 
     private void Start()
     {
-        
+        //audioSource初期化
+        _audioSource = gameObject.GetComponent<AudioSource>();
+
     }
 
     private void Update()

@@ -14,6 +14,11 @@ public class MusicDataManager : MonoBehaviour {
     //グローバル変数群
     public static MusicData[] Musics { get; private set; }    //音楽ファイル一覧取得
 
+    private void Start()
+    {
+        LoadMusics();
+    }
+
     /// <summary>
     /// 指定ディレクトリ下に存在する音楽データの一括読み込み
     /// </summary>
@@ -40,5 +45,6 @@ public class MusicDataManager : MonoBehaviour {
             //musicDataPathそれぞれに対してmusicsを読み込む
             Musics[i] = new MusicData(musicDataPath[i]);
         }
+        return;
     }
 }

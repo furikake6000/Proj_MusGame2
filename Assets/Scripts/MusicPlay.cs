@@ -9,30 +9,23 @@ using System.Threading.Tasks;
 [RequireComponent(typeof(AudioSource))]
 public class MusicPlay : MonoBehaviour {
 
-    //グローバル変数群
-    MusicData nowMusic;         //現在再生しているMusicのData
-    public MusicData NowMusic
-    {
-        get
-        {
-            return nowMusic;
-        }
+    //変数群
+    AudioSource _audioSource;    //このgameObjectに紐付けられたAudioSource(Required)
 
-        set
-        {
-            nowMusic = value;
-            LoadMusic();
-        }
+    MusicData _nowMusic;         //現在再生しているMusicのData
+
+    Key[] _keys; //鍵（けん）
+
+    public MusicData NowMusic {
+        get { return _nowMusic; }
+        set { _nowMusic = value; }
     }
-
-    AudioSource audioSource;    //このgameObjectに紐付けられたAudioSource(Required)
-    Key[] keys; //鍵（けん）
     
     // Start関数
-    private void Start () {
+    private void Start()
+    {
         //audioSource初期化
-        audioSource = gameObject.GetComponent<AudioSource>();
-
+        _audioSource = gameObject.GetComponent<AudioSource>();
         
     }
     
@@ -48,11 +41,10 @@ public class MusicPlay : MonoBehaviour {
     private void LoadMusic()
     {
         //もしnowMusicが存在しなかったら終了措置
-        if (nowMusic == null) return;
+        if (_nowMusic == null) return;
         
         //音楽のロード
-        StartCoroutine("StreamAudioFile", nowMusic.WavMain);
-
+        
         //鍵の情報取得
 
         //ノーツ情報取得、各鍵に配置
@@ -72,9 +64,9 @@ public class MusicPlay : MonoBehaviour {
             //読み込み完了まで待機
             yield return www;
 
-            audioSource.clip = www.GetAudioClip(true, true);
+            _audioSource.clip = www.GetAudioClip(true, true);
 
-            audioSource.Play();
+            _audioSource.Play();
         }
     }
 
@@ -83,14 +75,14 @@ public class MusicPlay : MonoBehaviour {
     /// </summary>
     private void Play()
     {
-        if(nowMusic == null)
+        if(_nowMusic == null)
         {
             //音楽が設定されていなかったら終了
             return;
         }
         
-        //WavMainをロード（非同期処理）
-        StartCoroutine("StreamAudioFile", nowMusic.WavMain);
+        ////Midifileをロード（非同期処理）
+        //StartCoroutine("StreamAudioFile", _nowMusic.Midifile);
     }
 
     /// <summary>
