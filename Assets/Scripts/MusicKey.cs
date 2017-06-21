@@ -7,7 +7,7 @@ public class Key : MonoBehaviour {
 
     //グローバル変数群
     AudioSource _audioSource;    //このgameObjectに紐付けられたAudioSource(Required)
-    Note[] _notes;  //ノーツ
+    MusicNote[] _notes;  //ノーツ
 
     private void Start()
     {

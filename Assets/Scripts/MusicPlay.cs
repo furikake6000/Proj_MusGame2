@@ -14,7 +14,7 @@ public class MusicPlay : MonoBehaviour {
 
     MusicData _nowMusic;         //現在再生しているMusicのData
 
-    Key[] _keys; //鍵（けん）
+    MusicKey[] _keys; //鍵（けん）
 
     public MusicData NowMusic {
         get { return _nowMusic; }
