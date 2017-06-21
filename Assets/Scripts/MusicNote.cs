@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MusicNote {
-    float _time;
+    float _reachTime;   //ノーツが対応ボタンに来るタイミング
+    float _duration;    //ノーツが流れはじめてからreachTimeまでの時間
     string _wavID;
 
-    public float Time{
-        get{ return _time; }
+    public float ReachTime{
+        get{ return _reachTime; }
 
-        set{ _time = value; }
+        set{ _reachTime = value; }
+    }
+
+    public float Duration{
+        get { return _duration; }
+
+        set { _duration = value; }
     }
 
     public string WavID{
@@ -17,4 +24,5 @@ public class MusicNote {
 
         set{ _wavID = value; }
     }
+
 }

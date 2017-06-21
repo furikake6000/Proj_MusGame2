@@ -18,7 +18,7 @@ public class MusicData {
     string _genre;      //ジャンル
     string _title;      //曲名
     string _artist;     //制作者名
-    float _bpm;         //初期BPM
+    List<bpmData> _bpm; //初期BPM
     string _midifile;   //バックグラウンドで流す音声ファイルへの絶対パス
     int _playlevel;     //難易度
     int _rank;          //ランク
@@ -30,7 +30,7 @@ public class MusicData {
     public string Genre { get{ return _genre; } }
     public string Title { get{ return _title; } }
     public string Artist { get{ return _artist; } }
-    public float Bpm { get{ return _bpm; } }
+    public List<bpmData> Bpm { get{ return _bpm; } }
     public string Midifile { get{ return _midifile; } }
     public int Playlevel { get{ return _playlevel; } }
     public int Rank { get{ return _rank; } }
@@ -58,7 +58,8 @@ public class MusicData {
         _genre = "";
         _title = "";
         _artist = "";
-        _bpm = 130;
+        _bpm = new List<bpmData>();
+        _bpm.Add(new bpmData(0, 130));  //デフォルトとして130のbpmを追加
         _midifile = "";
         _playlevel = 0;
         _rank = 0;
@@ -119,7 +120,8 @@ public class MusicData {
                             _artist = content;
                             break;
                         case "BPM":
-                            _bpm = float.Parse(content);
+                            //これによってデフォルトとあわせ二つのbpmDataが出来るが、常に後者を優先するため問題なし
+                            _bpm.Add(new bpmData(0, float.Parse(content)));
                             break;
                         case "MIDIFILE":
                             _midifile = Path.GetDirectoryName(_dataFilePath) + content;
@@ -172,5 +174,18 @@ public class MusicData {
                 }
             }
         }
+    }
+}
+
+//BPM途中変更に関するデータ
+struct bpmData
+{
+    public float bpm;   //変更された後のBPM
+    public int at;      //変更される位置（0-999の整数で指定される小節）
+
+    public bpmData(int at, float bpm)
+    {
+        this.bpm = bpm;
+        this.at = at;
     }
 }
