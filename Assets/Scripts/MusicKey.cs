@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class Key : MonoBehaviour {
+public class MusicKey : MonoBehaviour {
 
     //グローバル変数群
     AudioSource _audioSource;    //このgameObjectに紐付けられたAudioSource(Required)
-    MusicNote[] _notes;  //ノーツ
+    List<MusicNote> _notes = new List<MusicNote>();  //ノーツ
+
+    public List<MusicNote> Notes{ get{ return _notes; } set{ _notes = value;} }
 
     private void Start()
     {
