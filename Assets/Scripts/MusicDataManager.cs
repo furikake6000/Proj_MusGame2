@@ -45,6 +45,5 @@ public class MusicDataManager : MonoBehaviour {
             //musicDataPathそれぞれに対してmusicsを読み込む
             Musics[i] = new MusicData(musicDataPath[i]);
         }
-        return;
     }
 }

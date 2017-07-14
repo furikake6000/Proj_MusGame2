@@ -1,24 +1,25 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(AudioSource))]
 public class MusicPlay : MonoBehaviour {
 
     //変数群
-    AudioSource _audioSource;    //このgameObjectに紐付けられたAudioSource(Required)
+    AudioSource _audioSource;   //このgameObjectに紐付けられたAudioSource(Required)
 
-    MusicData _nowMusic;         //現在再生しているMusicのData
+    MusicData _nowMusic;        //現在再生しているMusicのData
 
-    MusicKey[] _keys; //鍵（けん）
+    List<MusicNote> _notes;         //ノーツ格納配列
 
     public MusicData NowMusic {
         get { return _nowMusic; }
-        set { _nowMusic = value; }
+        set {
+            _nowMusic = value;
+            LoadMusic();
+        }
     }
     
     // Start関数
@@ -42,12 +43,11 @@ public class MusicPlay : MonoBehaviour {
     {
         //もしnowMusicが存在しなかったら終了措置
         if (_nowMusic == null) return;
-        
-        //音楽のロード
-        
-        //鍵の情報取得
 
-        //ノーツ情報取得、各鍵に配置
+        //ノーツ情報取得
+        _notes = _nowMusic.loadMusicNotes();
+
+        //音楽のロード
 
     }
     /// <summary>

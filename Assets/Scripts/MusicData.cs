@@ -148,7 +148,14 @@ public class MusicData {
                             if (Regex.IsMatch(command, @"^\d{5}$"))
                             {
                                 //メインデータ部（音符の定義）
-                                //現状ではヘッダ読み込み時にメインデータに関して行うアクションは特になし
+                                int measure = int.Parse(command.Substring(0, 3));
+                                int channel = int.Parse(command.Substring(3, 2));
+
+                                //BPM変更検知
+                                if (channel == 8)
+                                {
+
+                                }
                             }
                             else if (Regex.IsMatch(command, @"^WAV[0-9A-Z]{2}$"))
                             {
@@ -175,17 +182,61 @@ public class MusicData {
             }
         }
     }
+
+    /// <summary>
+    /// データ部を解析しノーツ配列を返す
+    /// </summary>
+    /// <returns>ノーツ配列</returns>
+    public List<MusicNote> loadMusicNotes()
+    {
+        List<MusicNote> notes = new List<MusicNote>();
+
+        using (StreamReader dataFileStream = new StreamReader(DataFilePath, true))
+        {
+            while (dataFileStream.Peek() >= 0)
+            {
+                //一行ずつ読み込む
+                string dataLine = dataFileStream.ReadLine().ToUpper();
+
+                //データ部のみ抜き出して読み込み
+                if (Regex.IsMatch(dataLine, @"^#\d{5}:([0-9A-Z]{2})+$"))
+                {
+                    //メインデータ部（音符の定義）
+                    int measure = int.Parse(dataLine.Substring(1, 3));
+                    int channel = int.Parse(dataLine.Substring(4, 2));
+                    string content = dataLine.Substring(7);
+
+                    //音符配置
+                    if (channel == 0 || (channel >= 10 && channel <= 19))
+                    {
+                        int notesDensity = content.Length / 2;
+                        for (int i=0; i<notesDensity; i++)
+                        {
+                            //2文字ずつ読み込み
+                            string wavID = content.Substring(i * 2, 2);
+                            
+                            MusicNote newNote = new MusicNote(channel, wavID, 0/*reachtime*/, 3.0f/*durationtime*/);
+                            //↑TODO:reachTimeとdurationTimeを修正する
+                        }
+                    }
+                }
+            }
+        }
+
+        return notes;
+    }
+
 }
 
 //BPM途中変更に関するデータ
-struct bpmData
+public struct bpmData
 {
     public float bpm;   //変更された後のBPM
-    public int at;      //変更される位置（0-999の整数で指定される小節）
+    public int measure;      //変更される小節の番号
 
-    public bpmData(int at, float bpm)
+    public bpmData(int measure, float bpm)
     {
         this.bpm = bpm;
-        this.at = at;
+        this.measure = measure;
     }
 }
