@@ -14,6 +14,7 @@ public class MusicDataManager : MonoBehaviour {
     //グローバル変数群
     public static MusicData[] Musics { get; private set; }    //音楽ファイル一覧取得
 
+    //実行時処理
     private void Start()
     {
         LoadMusics();

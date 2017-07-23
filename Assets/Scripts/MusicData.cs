@@ -145,13 +145,18 @@ public class MusicData {
                             //switch文で読み取れないコマンドの判別
 
                             //判定
-                            if (Regex.IsMatch(command, @"^\d{5}$"))
+                            if (Regex.IsMatch(command, @"^\d{5}$") && Regex.IsMatch(content, @"([0-9A-Z]{2})+"))
                             {
                                 //メインデータ部（音符の定義）
                                 int measure = int.Parse(command.Substring(0, 3));
                                 int channel = int.Parse(command.Substring(3, 2));
 
                                 //BPM変更検知
+                                if (channel == 3)
+                                {
+
+                                }
+                                //BPM変更検知（BPM値として宣言された値）
                                 if (channel == 8)
                                 {
 
