@@ -121,7 +121,7 @@ public class MusicData {
                             break;
                         case "BPM":
                             //これによってデフォルトとあわせ二つのbpmDataが出来るが、常に後者を優先するため問題なし
-                            _bpm.Add(new bpmData(0, float.Parse(content)));
+                            _bpm.Add(new bpmData(0f, float.Parse(content)));
                             break;
                         case "MIDIFILE":
                             _midifile = Path.GetDirectoryName(_dataFilePath) + content;
@@ -154,12 +154,38 @@ public class MusicData {
                                 //BPM変更検知
                                 if (channel == 3)
                                 {
+                                    int notesDensity = content.Length / 2;
+                                    for (int i = 0; i < notesDensity; i++)
+                                    {
+                                        //2文字ずつ読み込み
+                                        int newBpm = int.Parse(content.Substring(i * 2, 2));
+                                        //現在触っている譜面上時間を取得
+                                        float nowTimeOnScore = measure + ((float)i / notesDensity);
 
+                                        //BPM変更を追加
+                                        _bpm.Add(new bpmData(nowTimeOnScore, newBpm));
+                                    }
                                 }
                                 //BPM変更検知（BPM値として宣言された値）
                                 if (channel == 8)
                                 {
+                                    int notesDensity = content.Length / 2;
+                                    for (int i = 0; i < notesDensity; i++)
+                                    {
+                                        //2文字ずつ読み込み
+                                        string bpmID = content.Substring(i * 2, 2);
+                                        //現在触っている音符の譜面上時間を取得
+                                        float nowTimeOnScore = measure + ((float)i / notesDensity);
 
+                                        //BPM変更を追加
+                                        _bpm.Add(new bpmData(nowTimeOnScore, _bpmEx[bpmID]));
+                                        /*
+                                         * ここで問題アリ！！！
+                                         * BPMEXの宣言前にこの命令が出されたら要素無しでエラー！！
+                                         * （大抵の場合事前に宣言してあるが...）
+                                         * しゅうせいするべし
+                                         */
+                                    }
                                 }
                             }
                             else if (Regex.IsMatch(command, @"^WAV[0-9A-Z]{2}$"))
@@ -211,7 +237,7 @@ public class MusicData {
                     int channel = int.Parse(dataLine.Substring(4, 2));
                     string content = dataLine.Substring(7);
 
-                    //音符配置
+                    //音符配置（チャンネルが0(オート音符)または10～19(1P譜面)ならば）
                     if (channel == 0 || (channel >= 10 && channel <= 19))
                     {
                         int notesDensity = content.Length / 2;
@@ -219,9 +245,10 @@ public class MusicData {
                         {
                             //2文字ずつ読み込み
                             string wavID = content.Substring(i * 2, 2);
-                            
-                            MusicNote newNote = new MusicNote(channel, wavID, 0/*reachtime*/, 3.0f/*durationtime*/);
-                            //↑TODO:reachTimeとdurationTimeを修正する
+                            //現在触っている音符の譜面上時間を取得
+                            float nowTimeOnScore = measure + ((float)i / notesDensity);
+
+                            MusicNote newNote = new MusicNote(channel, wavID, nowTimeOnScore, MusicNote.NOTE_DULATION_DEFAULT);
                         }
                     }
                 }
@@ -237,9 +264,9 @@ public class MusicData {
 public struct bpmData
 {
     public float bpm;   //変更された後のBPM
-    public int measure;      //変更される小節の番号
+    public float measure;      //変更される位置（譜面上時間）
 
-    public bpmData(int measure, float bpm)
+    public bpmData(float measure, float bpm)
     {
         this.bpm = bpm;
         this.measure = measure;

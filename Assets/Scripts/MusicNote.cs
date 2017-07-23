@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MusicNote {
+    //定数
+    public const float NOTE_DULATION_DEFAULT = 1.0f;
+
     int _location;      //ノーツの位置
-    float _reachTime;   //ノーツが対応ボタンに来るタイミング
-    float _duration;    //ノーツが流れはじめてからreachTimeまでの時間
+    float _reachTime;   //ノーツが対応ボタンに来るタイミング（譜面上時間）
+    float _duration;    //ノーツが流れはじめてからreachTimeまでの時間（譜面上時間）
     string _wavID;      //使うWavID（00-99,AA-ZZまでの大文字英数字37進数2文字）
 
     public float ReachTime{
