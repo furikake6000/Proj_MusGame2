@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 /// <summary>
 /// 楽曲のヘッダデータをファイルから読み込むクラス
@@ -159,6 +160,9 @@ public class MusicData {
                                     {
                                         //2文字ずつ読み込み
                                         int newBpm = int.Parse(content.Substring(i * 2, 2));
+                                        //0だったらはじく
+                                        if (newBpm == 0) continue;
+
                                         //現在触っている譜面上時間を取得
                                         float nowTimeOnScore = measure + ((float)i / notesDensity);
 
@@ -174,6 +178,9 @@ public class MusicData {
                                     {
                                         //2文字ずつ読み込み
                                         string bpmID = content.Substring(i * 2, 2);
+                                        //0だったらはじく
+                                        if (bpmID == "00") continue;
+
                                         //現在触っている音符の譜面上時間を取得
                                         float nowTimeOnScore = measure + ((float)i / notesDensity);
 
@@ -206,6 +213,9 @@ public class MusicData {
                             else
                             {
                                 //どこにもひっかからない謎のコマンド
+
+                                //Debugのログに出しておく
+                                Debug.Log("Command 「" + dataLine + "」 of " + _title + " Undefined.");
                             }
                             break;
                     }
@@ -245,6 +255,9 @@ public class MusicData {
                         {
                             //2文字ずつ読み込み
                             string wavID = content.Substring(i * 2, 2);
+                            //0だったらはじく
+                            if (wavID == "00") continue;
+
                             //現在触っている音符の譜面上時間を取得
                             float nowTimeOnScore = measure + ((float)i / notesDensity);
 
