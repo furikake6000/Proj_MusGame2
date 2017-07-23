@@ -19,7 +19,7 @@ public class MusicData {
     string _genre;      //ジャンル
     string _title;      //曲名
     string _artist;     //制作者名
-    List<bpmData> _bpm; //初期BPM
+    List<bpmData> _bpm; //BPM
     string _midifile;   //バックグラウンドで流す音声ファイルへの絶対パス
     int _playlevel;     //難易度
     int _rank;          //ランク
@@ -51,7 +51,7 @@ public class MusicData {
     //メソッド
 
     /// <summary>
-    /// 空のコンストラクタです。（デフォルトBPMは130です）
+    /// 空のコンストラクタです。
     /// </summary>
     public MusicData() {
         _dataFilePath = "";
@@ -60,7 +60,7 @@ public class MusicData {
         _title = "";
         _artist = "";
         _bpm = new List<bpmData>();
-        _bpm.Add(new bpmData(0, 130));  //デフォルトとして130のbpmを追加
+        //_bpm.Add(new bpmData(0, 130));  //デフォルトとして130のbpmを追加
         _midifile = "";
         _playlevel = 0;
         _rank = 0;
@@ -121,7 +121,7 @@ public class MusicData {
                             _artist = content;
                             break;
                         case "BPM":
-                            //これによってデフォルトとあわせ二つのbpmDataが出来るが、常に後者を優先するため問題なし
+                            //最初のBPMを設定
                             _bpm.Add(new bpmData(0f, float.Parse(content)));
                             break;
                         case "MIDIFILE":
